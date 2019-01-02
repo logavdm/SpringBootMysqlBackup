@@ -1,7 +1,5 @@
 package com.kambaa.entity;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
@@ -38,9 +36,9 @@ public class User {
 
 	private String Country;
 		
-	private Date createdAt;
+	private Long createdAt;
 
-	private Date updatedAt;
+	private Long updatedAt;
 
 	public long getId() {
 		return id;
@@ -99,19 +97,19 @@ public class User {
 		this.gender = gender;
 	}
 	
-	public Date getCreatedAt() {
+	public Long getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getUpdatedAt() {
+	public Long getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 

@@ -1,6 +1,8 @@
-package com.kambaa.entity;
+package com.kambaa.model;
 
-public class Task {
+import java.util.concurrent.ScheduledFuture;
+
+public class TaskWithObject {
 	
 	private long id;
 	private String taskName;
@@ -10,6 +12,7 @@ public class Task {
 	private Long updatedAt;
 	private Long createdAt;
 	private Long userid;
+	private ScheduledFuture<?> task;
 	
 	public long getId() {
 		return id;
@@ -59,5 +62,13 @@ public class Task {
 	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
+	public ScheduledFuture<?> getTask() {
+		return task;
+	}
+	public void setTask(ScheduledFuture<?> task) {
+		this.task = task;
+	}
+	
+	
 
 }

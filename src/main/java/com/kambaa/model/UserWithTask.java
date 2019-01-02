@@ -2,18 +2,14 @@ package com.kambaa.model;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import com.kambaa.entity.Task;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Component
-public class UserWithRole {
-
+public class UserWithTask {
+	
 	private long id;
 
 	private String email;
 
-	@JsonIgnore
 	private String Password;
 
 	private String mobile;
@@ -45,8 +41,8 @@ public class UserWithRole {
 	private Long createdAt;
 
 	private Long updatedAt;
-	
-	private List<String> role;
+
+	List<Task> listTasks;
 
 	public long getId() {
 		return id;
@@ -192,12 +188,12 @@ public class UserWithRole {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<String> getRole() {
-		return role;
+	public List<Task> getListTasks() {
+		return listTasks;
 	}
 
-	public void setRole(List<String> role) {
-		this.role = role;
+	public void setListTasks(List<Task> listTasks) {
+		this.listTasks = listTasks;
 	}
-	
+
 }

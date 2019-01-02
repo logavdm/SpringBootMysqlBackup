@@ -1,19 +1,13 @@
 package com.kambaa.model;
 
-import java.util.List;
+import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Component
-public class UserWithRole {
-
+public class UserWithTaskObjectMap {
+	
 	private long id;
 
 	private String email;
 
-	@JsonIgnore
 	private String Password;
 
 	private String mobile;
@@ -46,8 +40,8 @@ public class UserWithRole {
 
 	private Long updatedAt;
 	
-	private List<String> role;
-
+	Map<Long, TaskWithObject> listTasks;
+	
 	public long getId() {
 		return id;
 	}
@@ -192,12 +186,13 @@ public class UserWithRole {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<String> getRole() {
-		return role;
+	public Map<Long, TaskWithObject> getListTasks() {
+		return listTasks;
 	}
 
-	public void setRole(List<String> role) {
-		this.role = role;
+	public void setListTasks(Map<Long, TaskWithObject> listTasks) {
+		this.listTasks = listTasks;
 	}
-	
+
+
 }

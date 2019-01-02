@@ -13,6 +13,9 @@ public class UserRowMapper implements RowMapper<User> {
 	public User mapRow(ResultSet row, int rowNum) throws SQLException {		
 		User user=new User();
 		user.setId(row.getLong("users_id"));
+		user.setFullname(row.getString("users_fullname"));
+		user.setDob(row.getString("users_dob"));
+		user.setGender(row.getString("users_gender"));
 		user.setMobile(row.getString("users_mobile"));
 		user.setEmail(row.getString("users_email"));
 		user.setCity(row.getString("users_city"));
@@ -22,18 +25,11 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setAddressLine1(row.getString("users_address1"));
 		user.setAddressLine2(row.getString("users_address2"));
 		user.setAddressLine3(row.getString("users_address3"));
-		
-		user.setDob(row.getString("users_dob"));
-		
-		user.setFullname(row.getString("users_fullname"));
-		user.setGender(row.getString("users_gender"));
+		user.setPassword(row.getString("users_password"));
 		user.setEnable(row.getBoolean("users_is_enable"));
 		user.setLocked(row.getBoolean("users_is_locked"));
-		
-		
-		user.setPassword(row.getString("users_password"));
-		user.setUpdatedAt(row.getDate("users_updated_at"));
-		user.setCreatedAt(row.getDate("users_created_at"));
+		user.setUpdatedAt(row.getTimestamp("users_updated_at")==null?null:row.getTimestamp("users_updated_at").getTime());
+		user.setCreatedAt(row.getTimestamp("users_created_at")==null?null:row.getTimestamp("users_created_at").getTime());
 		return user;
 	}
 }

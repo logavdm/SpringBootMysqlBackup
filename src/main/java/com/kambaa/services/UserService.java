@@ -107,11 +107,11 @@ public class UserService {
 		return (User) this.jdbcTemplate.query(sql, new Object[] { email }, rowMapper).get(0);
 	}
 
-	public User findByMobile(String mobile) {
+	public UserWithRole findByMobile(String mobile) {
 		try {
-			String sql = "SELECT * FROM users WHERE users_mobile = ?";
-			RowMapper<User> rowMapper = new UserRowMapper();
-			return this.jdbcTemplate.query(sql, new Object[] { mobile }, rowMapper).get(0);
+			String sql = "SELECT u.*,ur.* FROM users AS u LEFT JOIN user_roles AS ur ON ur.user_roles_user_id=u.users_id WHERE u.users_mobile = ?";
+			UserWithRoleExtractor resultExtractor = new UserWithRoleExtractor();
+			return this.jdbcTemplate.query(sql, new Object[] { mobile }, resultExtractor).get(0);
 		} catch (Exception e) {
 			logger.error("Error occured when user find by mobile:" + e);
 			return null;
@@ -177,7 +177,7 @@ public class UserService {
 	public boolean validateMobileAndPassword(String mobile,String password,HttpSession session) {
 		try {
 			if(existsMobile(mobile)) {
-				User user=findByMobile(mobile);
+				UserWithRole user=findByMobile(mobile);
 				if(user!=null && BCrypt.checkpw(password, user.getPassword()) && user.isEnable() && !user.isLocked()) {
 					logger.info("user validation success");
 					convertToUserModel(user, session);
@@ -197,7 +197,7 @@ public class UserService {
 	}
 	
 	
-	boolean convertToUserModel(User user, HttpSession session) {
+	boolean convertToUserModel(UserWithRole user, HttpSession session) {
 		try {
 			UserModel userModel = new UserModel();
 			userModel.setEmail(user.getEmail());
@@ -205,6 +205,7 @@ public class UserService {
 			userModel.setFullname(user.getFullname());
 			userModel.setEnabled(user.isEnable());
 			userModel.setId(user.getId());
+			userModel.setRole(user.getRole());
 			session.setAttribute("USERDETAILS", userModel);
 			return true;
 		} catch (Exception e) {
