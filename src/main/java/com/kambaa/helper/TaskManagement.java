@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import com.kambaa.model.TaskWithObject;
@@ -18,6 +19,9 @@ public class TaskManagement {
 
 	@Autowired
 	Map<Long,Map<Long,TaskWithObject>> listTask;
+	
+	@Autowired
+	ThreadPoolTaskScheduler taskScheduler;
 	
 	@Autowired
 	TaskServices taskServices;
@@ -43,18 +47,22 @@ public class TaskManagement {
 	
 	public boolean existByUserIdAndTaskID(Long userid,Long taskID) {
 		try {
-			
-			Map<Long,TaskWithObject> mapTaskList=listTask.get(userid);
-			if(mapTaskList!=null && mapTaskList.containsKey(taskID)) {
-				logger.info("Task exist on the running task list");
-				return true;
+			if(listTask.containsKey(userid)) {
+				logger.info("user already have running task");
+				if(listTask.get(userid).containsKey(taskID)) {
+					logger.info("user id and task id already exist");
+					return true;
+				}else {
+					logger.info("task id not found");
+					return false;
+				}
 			}else {
-				logger.info("Task doen't exist on running task list ");
+				logger.info("User don't have any running task");
 				return false;
 			}
 		}catch (Exception e) {
 			logger.error("Error occured when checking the task exist by user id :"+e);
-			return false;
+			return true;
 		}
 	}
 	
@@ -90,6 +98,31 @@ public class TaskManagement {
 		}
 	}
 	
+	public boolean stopTask(long userid,long taskId) {
+		try {
+			if(listTask.containsKey(userid) && listTask.get(userid).containsKey(taskId)) {
+				if(listTask.get(userid).get(taskId).getTask().cancel(false)) {
+					listTask.get(userid).remove(taskId);
+					
+					if(listTask.get(userid).size()<=0) {
+						listTask.remove(userid);
+					}
+					
+					logger.debug("task stopped and remove successfully");
+					return true;
+				}else{
+					logger.debug("error when stop the task");
+					return false;
+				}
+			}else {
+				logger.debug("Task not found to stop");
+				return false;
+			}
+		}catch (Exception e) {
+			logger.error("Error occured when stop the task :"+e);
+			return false;
+		}
+	}
 	
 	@Async
 	public void updateTaskStatusByID(Long taskID,String status) {
@@ -99,4 +132,18 @@ public class TaskManagement {
 			logger.error("Error occured when task status update method :"+e);
 		}
 	}
+	
+	public int countRunningTaskByUserID(Long userID) {
+		try {
+			if(listTask.containsKey(userID)) {
+				return listTask.get(userID).size();
+			}else {
+				return 0;
+			}
+		}catch (Exception e) {
+			logger.error("Error when count running task list by user id :"+e);
+			return Integer.MAX_VALUE;
+		}
+	}
+	
 }

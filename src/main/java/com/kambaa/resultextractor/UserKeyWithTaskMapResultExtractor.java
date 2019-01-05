@@ -17,6 +17,7 @@ public class UserKeyWithTaskMapResultExtractor implements ResultSetExtractor<Map
 		Map<Long,Map<Long,TaskWithObject>> map = new HashMap<Long,Map<Long,TaskWithObject>>();
 		Long userid=null;
 		while(row.next()) {
+			userid=row.getLong("users_id");
 			if(map.containsKey(userid)) {
 				Map<Long,TaskWithObject> listTask=map.get(userid);
 				TaskWithObject task=new TaskWithObject();

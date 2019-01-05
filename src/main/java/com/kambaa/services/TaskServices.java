@@ -1,6 +1,8 @@
 package com.kambaa.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +44,8 @@ public class TaskServices {
 	
 	public List<Task> findAllByUserID(Long userID){
 		try {
-			String sql="SELECT * from task WHERE task_users_id=?";
-			return this.jdbcTemplate.query(sql, new Object[] {userID},new TaskRowMapper());
+			String sql="SELECT * from task WHERE task_users_id=? AND task_enabled=?";
+			return this.jdbcTemplate.query(sql, new Object[] {userID,true},new TaskRowMapper());
 		}catch (Exception e) {
 			logger.error("Error occured when getting the task list by user :"+e);
 			return null;
@@ -69,5 +71,98 @@ public class TaskServices {
 			return null;
 		}
 	}
-	
+
+
+	public List<Task> FindAllByUserWithStatusWithPagination(long userid,String status, int count, int offset) {
+		try {
+			String sql="SELECT * FROM task WHERE task_users_id=:userid AND task_status=:status LIMIT :count OFFSET :offset";
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userid",userid);
+			params.put("status", status);
+			params.put("count",count);
+			params.put("offset",offset);
+			return this.namedJdbcTemplate.query(sql,params,new TaskRowMapper());
+		}catch (Exception e) {
+			logger.error("Error occured when getting the all user list with pagination :"+e);
+			return null;
+		}
+	}
+
+
+	public List<Task> FindAllByUserWithStatusWithFilterAndPagination(long userid, String status, String filter, int count, int offset) {
+		try {
+			String sql="SELECT * FROM task WHERE task_users_id=:userid AND task_status=:status AND task_id LIKE :filter OR task_name LIKE :filter OR task_status LIKE :filter LIMIT :count OFFSET :offset";
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userid",userid);
+			params.put("status", status);
+			params.put("filter",filter);
+			params.put("count",count);
+			params.put("offset",offset);
+			return this.namedJdbcTemplate.query(sql,params,new TaskRowMapper());
+		}catch (Exception e) {
+			logger.error("Error occured when getting the all task list with filter and status :"+e);
+			return null;
+		}
+	}
+
+
+	public int countByUser(long userid) {
+		String sql="SELECT COUNT(task_id) FROM task WHERE task_users_id=?";
+		return this.jdbcTemplate.queryForObject(sql, new Object[] {userid},Integer.class);
+	}
+
+
+	public int countByUserAndStatus(long userid, String status) {
+		String sql="SELECT COUNT(task_id) FROM task WHERE task_users_id=? AND task_status=?";
+		return this.jdbcTemplate.queryForObject(sql, new Object[] {userid,status},Integer.class);
+	}
+
+
+	public int countByUserAndStatusAndFilter(long userid, String status, String filter) {
+		String sql="SELECT COUNT(task_id) FROM task WHERE task_users_id=? AND task_status=? AND task_id LIKE :filter OR task_name LIKE :filter OR task_status LIKE :filter";
+		return this.jdbcTemplate.queryForObject(sql, new Object[] {userid,status},Integer.class);
+	}
+
+
+	public List<Task> FindAllByUserWithPagination(long userid, int count, int offset) {
+		try {
+			String sql="SELECT * FROM task WHERE task_users_id=:userid LIMIT :count OFFSET :offset";
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userid",userid);
+			params.put("count",count);
+			params.put("offset",offset);
+			return this.namedJdbcTemplate.query(sql,params,new TaskRowMapper());
+		}catch (Exception e) {
+			logger.error("Error occured when getting the all user list with pagination :"+e);
+			return null;
+		}
+	}
+
+
+	public List<Task> FindAllByUserWithFilterAndPagination(long userid,String filter, int count, int offset) {
+		try {
+			String sql="SELECT * FROM task WHERE task_users_id=:userid AND task_id LIKE :filter OR task_name LIKE :filter OR task_status LIKE :filter LIMIT :count OFFSET :offset";
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userid",userid);
+			params.put("filter",filter);
+			params.put("count",count);
+			params.put("offset",offset);
+			return this.namedJdbcTemplate.query(sql,params,new TaskRowMapper());
+		}catch (Exception e) {
+			logger.error("Error occured when getting the all task list with filter and status :"+e);
+			return null;
+		}
+	}
+
+
+	public int countByUserAndFilter(long userid, String filter) {
+		String sql="SELECT COUNT(task_id) FROM task WHERE task_users_id=:userid AND task_id LIKE :filter OR task_name LIKE :filter OR task_status LIKE :filter";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userid",userid);
+		params.put("filter",filter);
+		return this.namedJdbcTemplate.queryForObject(sql, params,Integer.class);
+	}
+
+
+
 }
