@@ -22,8 +22,9 @@ import com.kambaa.controller.user.starttaskvalidator.CheckUserReachedMaximumTask
 import com.kambaa.controller.user.starttaskvalidator.StartTaskValidator;
 import com.kambaa.controller.user.starttaskvalidator.TaskExistCheck;
 import com.kambaa.helper.TaskManagement;
+import com.kambaa.helper.mysqlbackup.MysqlExportServices;
+import com.kambaa.model.MysqlBackUpTask;
 import com.kambaa.model.Response;
-import com.kambaa.model.RunnableTask;
 import com.kambaa.model.TaskWithObject;
 import com.kambaa.model.UserModel;
 import com.kambaa.services.TaskActionLogServices;
@@ -47,6 +48,9 @@ public class StartTaskController {
 	TaskManagement taskManagement;
 	
 	@Autowired
+	MysqlExportServices mysqlExportServices;
+	
+	@Autowired
 	ThreadPoolTaskScheduler taskScheduler;
 	
 	@Autowired
@@ -59,7 +63,6 @@ public class StartTaskController {
 	@RequestMapping(value="/task/start/{taskid}",method= {RequestMethod.POST})
 	public Response startTask(@PathVariable("taskid")Long taskID,HttpSession session) {
 		try {
-			
 			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
 			List<StartTaskValidator> listValidation=new LinkedList<>();
 			listValidation.add(new TaskExistCheck(user.getId(),taskID,taskServices));
@@ -73,7 +76,7 @@ public class StartTaskController {
 				}
 				
 				TaskWithObject task=taskServices.findByUserIDAndId(user.getId(),taskID);
-				ScheduledFuture<?> taskThread = taskScheduler.schedule(new RunnableTask(task.getTaskName(),task,taskActivityLogServices),new CronTrigger(task.getCronExpression()));
+				ScheduledFuture<?> taskThread = taskScheduler.schedule(new MysqlBackUpTask(mysqlExportServices,task),new CronTrigger(task.getCronExpression()));
 				task.setTask(taskThread);
 				
 				if(taskManagement.addNewTask(user.getId(), task)) {

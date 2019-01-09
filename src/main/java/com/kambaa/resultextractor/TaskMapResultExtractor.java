@@ -28,6 +28,9 @@ public class TaskMapResultExtractor implements ResultSetExtractor<Map<Long,TaskW
 				taskWithObject.setEnabled(row.getBoolean("task_enabled"));
 				taskWithObject.setStatus("task_status");
 				taskWithObject.setUserid(row.getLong("task_users_id"));
+				taskWithObject.setConnectionString(row.getString("task_connection_string"));
+				taskWithObject.setUsername(row.getString("task_database_username"));
+				taskWithObject.setPassword(row.getString("task_database_password"));
 				taskWithObject.setUpdatedAt(row.getTimestamp("task_updated_at")==null?null:row.getTimestamp("task_updated_at").getTime());
 				taskWithObject.setCreatedAt(row.getTimestamp("task_created_at")==null?null:row.getTimestamp("task_created_at").getTime());
 				map.put(taskID, taskWithObject);

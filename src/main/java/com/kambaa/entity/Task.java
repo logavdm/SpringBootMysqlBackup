@@ -1,11 +1,19 @@
 package com.kambaa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Task {
-	
 	private long id;
 	private String taskName;
 	private String cronExpression;
 	private String status;
+	@JsonIgnore
+	private String connectionString;
+	private String database;
+	@JsonIgnore
+	private String username;
+	@JsonIgnore
+	private String password;
 	private boolean enabled;
 	private Long updatedAt;
 	private Long createdAt;
@@ -34,6 +42,30 @@ public class Task {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getConnectionString() {
+		return connectionString;
+	}
+	public void setConnectionString(String connectionString) {
+		this.connectionString = connectionString;
+	}
+	public String getDatabase() {
+		return database;
+	}
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public boolean isEnabled() {
 		return enabled;

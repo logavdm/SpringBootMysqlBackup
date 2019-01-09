@@ -14,7 +14,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
-import com.kambaa.model.RunnableTask;
+import com.kambaa.helper.mysqlbackup.MysqlExportServices;
+import com.kambaa.model.MysqlBackUpTask;
 import com.kambaa.model.TaskWithObject;
 import com.kambaa.resultextractor.UserKeyWithTaskMapResultExtractor;
 import com.kambaa.services.TaskActivityLogServices;
@@ -29,6 +30,9 @@ public class TaskConfigurations {
 
 	@Autowired
 	TaskServices taskServices;
+	
+	@Autowired
+	MysqlExportServices mysqlExportServices;
 	
 	@Autowired
 	TaskActivityLogServices taskLogServices;
@@ -57,7 +61,7 @@ public class TaskConfigurations {
 				if (taskList != null && taskList.size() > 0) {
 					for (Long taskid : taskList.keySet()) {
 						try {
-							ScheduledFuture<?> taskItem = threadPoolTaskScheduler().schedule(new RunnableTask(taskList.get(taskid).getTaskName(),taskList.get(taskid),taskLogServices),new CronTrigger(taskList.get(taskid).getCronExpression()));
+							ScheduledFuture<?> taskItem = threadPoolTaskScheduler().schedule(new MysqlBackUpTask(mysqlExportServices,taskList.get(taskid)),new CronTrigger(taskList.get(taskid).getCronExpression()));
 							taskList.get(taskid).setTask(taskItem);
 							taskList.get(taskid).setStatus("RUNNING");
 							taskServices.updateTaskStatusByID(taskid, "RUNNING");

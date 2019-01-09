@@ -18,6 +18,10 @@ public class TaskWithObjectRowmapper implements RowMapper<TaskWithObject> {
 		task.setEnabled(row.getBoolean("task_enabled"));
 		task.setStatus(row.getString("task_status"));
 		task.setUserid(row.getLong("task_users_id"));
+		task.setConnectionString(row.getString("task_connection_string"));
+		task.setDatabase(row.getString("task_database"));
+		task.setUsername(row.getString("task_database_username"));
+		task.setPassword(row.getString("task_database_password"));
 		task.setUpdatedAt(row.getTimestamp("task_updated_at")==null?null:row.getTimestamp("task_updated_at").getTime());
 		task.setCreatedAt(row.getTimestamp("task_created_at")==null?null:row.getTimestamp("task_created_at").getTime());
 		return task;
