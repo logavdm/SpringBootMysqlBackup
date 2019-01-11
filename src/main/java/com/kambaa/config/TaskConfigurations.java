@@ -55,9 +55,7 @@ public class TaskConfigurations {
 		Map<Long, Map<Long, TaskWithObject>> userMapWithTaskList = this.jdbcTemplate.query(taskGetQuery,new UserKeyWithTaskMapResultExtractor());
 		if (userMapWithTaskList != null && userMapWithTaskList.size() > 0) {
 			for (Long userid : userMapWithTaskList.keySet()) {
-				logger.info("User id :" + userMapWithTaskList.get(userid));
-				Map<Long, TaskWithObject> taskList = userMapWithTaskList.get(userid);
-				logger.info("task size:"+taskList.size());
+				Map<Long, TaskWithObject> taskList = userMapWithTaskList.get(userid);				
 				if (taskList != null && taskList.size() > 0) {
 					for (Long taskid : taskList.keySet()) {
 						try {

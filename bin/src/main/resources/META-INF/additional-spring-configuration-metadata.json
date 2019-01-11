@@ -23,25 +23,5 @@
     "name": "database.mysql.driver.class",
     "type": "java.lang.String",
     "description": "A description for 'database.mysql.driver.class'"
-  },
-  {
-    "name": "database.backup.maximum.table",
-    "type": "java.lang.String",
-    "description": "A description for 'database.backup.maximum.table'"
-  },
-  {
-    "name": "database.backup.maximum.row.pertable",
-    "type": "java.lang.String",
-    "description": "A description for 'database.backup.maximum.row.pertable'"
-  },
-  {
-    "name": "database.backup.type",
-    "type": "java.lang.String",
-    "description": "A description for 'database.backup.type'"
-  },
-  {
-    "name": "database.backup.location",
-    "type": "java.lang.String",
-    "description": "A description for 'database.backup.location'"
   }
 ]}
