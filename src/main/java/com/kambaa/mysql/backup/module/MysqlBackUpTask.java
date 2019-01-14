@@ -1,9 +1,9 @@
-package com.kambaa.model;
+package com.kambaa.mysql.backup.module;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kambaa.helper.mysqlbackup.MysqlExportServices;
+import com.kambaa.model.TaskWithObject;
 
 public class MysqlBackUpTask implements Runnable {
 
@@ -19,8 +19,11 @@ public class MysqlBackUpTask implements Runnable {
 	
 	@Override
 	public void run() {
-		logger.info("mysql backup task running");
-		this.mysqlExportServices.exportMysqlDatabase(taskWithObject);
+		try {
+			this.mysqlExportServices.exportMysqlDatabase(taskWithObject);
+		
+		}catch (Exception e) {
+			logger.error("Error occured when task backup");
+		}
 	}
-
 }

@@ -1,4 +1,4 @@
-package com.kambaa.helper.mysqlbackup;
+package com.kambaa.mysql.backup.module;
 
 public interface MysqlBackUpValidator {
 	

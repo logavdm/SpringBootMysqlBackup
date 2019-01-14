@@ -1,4 +1,4 @@
-package com.kambaa.helper.mysqlbackup;
+package com.kambaa.mysql.backup.module;
 
 import java.util.List;
 import java.util.Map;
@@ -19,17 +19,12 @@ public class MaximumTableAndRowRestrictionValidate implements MysqlBackUpValidat
 		
 	@Override
 	public void validate() {
-		try {
-					
 		if(listTables.size()>=maxTable)
 			throw new IllegalArgumentException("Number of Table size exceed the configured maximum table size Total tables :"+listTables.size()+" configured :"+maxTable);
 		
 		for (Map<String, String> map : listTables) {
 			if(!(Long.valueOf(map.get("ROW"))<=maxRows))
 				throw new IllegalArgumentException("The table "+map.get("TABLE")+" exceed the configured row limit row size is :"+map.get("ROW") +" configured limit is :"+maxRows);
-		}
-		}catch (Exception e) {
-			System.err.println("error :"+e);
 		}
 	}
 

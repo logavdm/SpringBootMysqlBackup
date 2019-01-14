@@ -14,9 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 
-import com.kambaa.helper.mysqlbackup.MysqlExportServices;
-import com.kambaa.model.MysqlBackUpTask;
 import com.kambaa.model.TaskWithObject;
+import com.kambaa.mysql.backup.module.MysqlBackUpTask;
+import com.kambaa.mysql.backup.module.MysqlExportServices;
 import com.kambaa.resultextractor.UserKeyWithTaskMapResultExtractor;
 import com.kambaa.services.TaskActivityLogServices;
 import com.kambaa.services.TaskServices;

@@ -22,11 +22,11 @@ import com.kambaa.controller.user.starttaskvalidator.CheckUserReachedMaximumTask
 import com.kambaa.controller.user.starttaskvalidator.StartTaskValidator;
 import com.kambaa.controller.user.starttaskvalidator.TaskExistCheck;
 import com.kambaa.helper.TaskManagement;
-import com.kambaa.helper.mysqlbackup.MysqlExportServices;
-import com.kambaa.model.MysqlBackUpTask;
 import com.kambaa.model.Response;
 import com.kambaa.model.TaskWithObject;
 import com.kambaa.model.UserModel;
+import com.kambaa.mysql.backup.module.MysqlBackUpTask;
+import com.kambaa.mysql.backup.module.MysqlExportServices;
 import com.kambaa.services.TaskActionLogServices;
 import com.kambaa.services.TaskActivityLogServices;
 import com.kambaa.services.TaskServices;
