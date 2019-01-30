@@ -24,7 +24,7 @@ import com.kambaa.controller.user.starttaskvalidator.TaskExistCheck;
 import com.kambaa.helper.TaskManagement;
 import com.kambaa.model.Response;
 import com.kambaa.model.TaskWithObject;
-import com.kambaa.model.UserModel;
+import com.kambaa.model.UserWithRole;
 import com.kambaa.mysql.backup.module.MysqlBackUpTask;
 import com.kambaa.mysql.backup.module.MysqlExportServices;
 import com.kambaa.services.TaskActionLogServices;
@@ -63,7 +63,7 @@ public class StartTaskController {
 	@RequestMapping(value="/task/start/{taskid}",method= {RequestMethod.POST})
 	public Response startTask(@PathVariable("taskid")Long taskID,HttpSession session) {
 		try {
-			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
+			UserWithRole user=(UserWithRole) session.getAttribute("USERDETAILS");
 			List<StartTaskValidator> listValidation=new LinkedList<>();
 			listValidation.add(new TaskExistCheck(user.getId(),taskID,taskServices));
 			listValidation.add(new CheckAlreadyRunning(user.getId(),taskID,taskManagement));

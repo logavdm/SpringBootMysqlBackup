@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kambaa.entity.Task;
 import com.kambaa.model.Pageable;
 import com.kambaa.model.Response;
-import com.kambaa.model.UserModel;
+import com.kambaa.model.UserWithRole;
 import com.kambaa.services.TaskServices;
 
 @RestController
@@ -38,7 +38,7 @@ public class TaskListController {
 	public Response getAllTaskList(HttpSession session) {
 		logger.info("-----------------------USER GET ALL TASK LIST  START HERE---------------------------------");
 		try {
-			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
+			UserWithRole user=(UserWithRole) session.getAttribute("USERDETAILS");
 			List<Task> listTask=taskServices.findAllByUserID(user.getId());
 			if(listTask!=null && listTask.size()>0) {
 				logger.info("Task list get success");
@@ -66,7 +66,7 @@ public class TaskListController {
 	public Response getAllTaskListWithPagination(HttpSession session,@RequestParam(value="page")int page,@RequestParam("limit")int count,@RequestParam(value="filter",required=false)String filter) {
 		logger.info("-----------------------USER GET ALL TASK LIST WITH PAGINATION START HERE---------------------------------");
 		try {
-			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
+			UserWithRole user=(UserWithRole) session.getAttribute("USERDETAILS");
 			List<Task> listTasks;
 			if(filter==null || filter.isEmpty() || filter.equalsIgnoreCase("") || filter.equalsIgnoreCase(" ")) {
 				logger.info("Filter parameter received as empty or null");
@@ -112,7 +112,7 @@ public class TaskListController {
 	public Response getAllTaskListByStatus(HttpSession session,@RequestParam(value="status")String status,@RequestParam(value="page")int page,@RequestParam("limit")int count,@RequestParam(value="filter",required=false)String filter) {
 		logger.info("-----------------------USER GET ALL TASK LIST WITH STATUS START HERE---------------------------------");
 		try {
-			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
+			UserWithRole user=(UserWithRole) session.getAttribute("USERDETAILS");
 			List<Task> listTasks;
 			if(filter==null || filter.isEmpty() || filter.equalsIgnoreCase("") || filter.equalsIgnoreCase(" ")) {
 				logger.info("Filter parameter received as empty or null");

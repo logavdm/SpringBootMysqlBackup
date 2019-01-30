@@ -37,6 +37,38 @@ public class LoginController {
 				response.setResponse(null);
 			} else {
 				if (userServices.validateMobileAndPassword(mobile, password, session)) {
+					logger.info("login success");
+					response.setResponsecode("200");
+					response.setMessage("Login success");
+					response.setResponse(session.getAttribute("USERDETAILS"));
+				} else {
+					response.setResponsecode("403");
+					response.setMessage("Invalid Mobile number or password");
+					response.setResponse(null);
+				}
+			} 
+		} catch (Exception e) {
+			logger.error("Error occured when user login controller :" + e);
+			response.setResponsecode("500");
+			response.setMessage("Something went wrong please try to contact the administrator");
+			response.setResponse(null);
+		}
+		logger.info("----------------- USER LOGIN CONTROLLER END HERE --------------------------------------");
+		return response;
+	}
+	
+	
+	@RequestMapping(value = "/login/new", method = { RequestMethod.GET })
+	public Response loginUserWithMobileAndPasswordPost(@RequestParam(value = "mobile") String mobile,@RequestParam(value = "password") String password, HttpSession session) {
+		logger.info("----------------- USER LOGIN CONTROLLER START HERE --------------------------------------");
+		try {
+			if (!userServices.existsMobile(mobile)) {
+				logger.info("Mobile number not found");
+				response.setResponsecode("404");
+				response.setMessage("Invalid mobile number or password");
+				response.setResponse(null);
+			} else {
+				if (userServices.validateMobileAndPassword(mobile, password, session)) {
 					UserModel user = (UserModel) session.getAttribute("USERDETAILS");
 					logger.info("login success");
 					response.setResponsecode("200");
@@ -47,8 +79,7 @@ public class LoginController {
 					response.setMessage("Invalid Mobile number or password");
 					response.setResponse(null);
 				}
-			}
-
+			} 
 		} catch (Exception e) {
 			logger.error("Error occured when user login controller :" + e);
 			response.setResponsecode("500");
@@ -58,5 +89,6 @@ public class LoginController {
 		logger.info("----------------- USER LOGIN CONTROLLER END HERE --------------------------------------");
 		return response;
 	}
+
 
 }

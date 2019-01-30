@@ -19,7 +19,7 @@ import com.kambaa.controller.user.stoptaskvalidator.CheckAlreadyRunning;
 import com.kambaa.controller.user.stoptaskvalidator.StopTaskValidator;
 import com.kambaa.helper.TaskManagement;
 import com.kambaa.model.Response;
-import com.kambaa.model.UserModel;
+import com.kambaa.model.UserWithRole;
 import com.kambaa.services.TaskActionLogServices;
 import com.kambaa.services.TaskServices;
 
@@ -47,7 +47,7 @@ public class StopTaskController {
 	@RequestMapping(value="/task/stop/{taskid}",method= {RequestMethod.POST})
 	public Response stopTask(@PathVariable("taskid")Long taskID,HttpSession session) {
 		try {
-			UserModel user=(UserModel) session.getAttribute("USERDETAILS");
+			UserWithRole user=(UserWithRole) session.getAttribute("USERDETAILS");
 			List<StopTaskValidator> listValidation=new LinkedList<>();
 			listValidation.add(new com.kambaa.controller.user.stoptaskvalidator.TaskExistCheck(user.getId(),taskID,taskServices));
 			listValidation.add(new CheckAlreadyRunning(user.getId(),taskID,taskManagement));

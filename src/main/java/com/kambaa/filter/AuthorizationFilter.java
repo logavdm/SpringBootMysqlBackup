@@ -37,6 +37,7 @@ public class AuthorizationFilter implements Filter {
 			"/",
 			"/demo",
 			"/user/login",
+			"/user/login/new",
 			"/user/register",
 			"/user/activate",
 			"/user/resendotp",
@@ -58,10 +59,9 @@ public class AuthorizationFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		
 		try {
-			logger.info("Filter initiated");
 			//ALLOW HEADER CONFIGURATIONS
 			httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-			httpResponse.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+			httpResponse.setHeader("Access-Control-Allow-Methods", "GET,POST, PUT,OPTIONS, DELETE");
 			httpResponse.setHeader("Access-Control-Max-Age", "3600");
 			httpResponse.setHeader("Access-Control-Allow-Headers","content-type,authorization,api-call-type,RemoteIP");
 			httpResponse.setHeader("Access-Control-Allow-Credentials", "true");

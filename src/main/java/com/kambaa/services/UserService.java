@@ -15,7 +15,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.kambaa.entity.User;
-import com.kambaa.model.UserModel;
 import com.kambaa.model.UserWithRole;
 import com.kambaa.resultextractor.UserWithRoleExtractor;
 import com.kambaa.rowmapper.UserRowMapper;
@@ -180,7 +179,7 @@ public class UserService {
 				UserWithRole user=findByMobile(mobile);
 				if(user!=null && BCrypt.checkpw(password, user.getPassword()) && user.isEnable() && !user.isLocked()) {
 					logger.info("user validation success");
-					convertToUserModel(user, session);
+					session.setAttribute("USERDETAILS", user);
 					return true;
 				}else{
 					logger.info("User entered invalid password");
@@ -196,22 +195,5 @@ public class UserService {
 		}
 	}
 	
-	
-	boolean convertToUserModel(UserWithRole user, HttpSession session) {
-		try {
-			UserModel userModel = new UserModel();
-			userModel.setEmail(user.getEmail());
-			userModel.setMobile(user.getMobile());
-			userModel.setFullname(user.getFullname());
-			userModel.setEnabled(user.isEnable());
-			userModel.setId(user.getId());
-			userModel.setRole(user.getRole());
-			session.setAttribute("USERDETAILS", userModel);
-			return true;
-		} catch (Exception e) {
-			logger.error("Error occcured when convert to user model:"+e);
-			return false;
-		}
-	}
 	
 }
