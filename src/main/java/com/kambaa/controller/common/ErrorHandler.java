@@ -95,16 +95,16 @@ public class ErrorHandler implements ErrorController {
 			responseEntity=new ResponseEntity<Response>(res,HttpStatus.UNAUTHORIZED);
 		break;
 		}
-		
-		responseEntity=new ResponseEntity<Response>(res,HttpStatus.OK);
 		return responseEntity;
 	}
-	
 
 	@Override
 	public String getErrorPath() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	
 	
 }
